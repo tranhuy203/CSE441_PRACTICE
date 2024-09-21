@@ -22,7 +22,7 @@ public class Subactivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        btnok = findViewById(R.id.btncall);
+        btnok = findViewById(R.id.btnok);
         btnok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
