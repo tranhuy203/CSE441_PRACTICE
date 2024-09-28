@@ -26,6 +26,7 @@ public class ChildActivity extends AppCompatActivity {
             return insets;
         });
         initView();
+        //h
     }
 
     private void initView() {
