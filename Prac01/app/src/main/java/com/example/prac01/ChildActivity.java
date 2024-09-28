@@ -26,9 +26,9 @@ public class ChildActivity extends AppCompatActivity {
             return insets;
         });
         initView();
-        //h
-    }
 
+    }
+// Khởi tạo View
     private void initView() {
         btnSubmit = findViewById(R.id.btnSubmit);
         edtGPA = findViewById(R.id.edtGPA);
