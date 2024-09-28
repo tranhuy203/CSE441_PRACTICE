@@ -28,5 +28,21 @@ public class ChildActivity extends AppCompatActivity {
         initView();
     }
 
-
+    private void initView() {
+        btnSubmit = findViewById(R.id.btnSubmit);
+        edtGPA = findViewById(R.id.edtGPA);
+        edtName = findViewById(R.id.edtName);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ChildActivity.this,MainActivity.class);
+                String name = edtName.getText().toString().trim();
+                String gpa = edtGPA.getText().toString().trim();
+                i.putExtra("name",name);
+                i.putExtra("gpa",gpa);
+                setResult(2,i);
+                finish();
+            }
+        });
+    }
 }
