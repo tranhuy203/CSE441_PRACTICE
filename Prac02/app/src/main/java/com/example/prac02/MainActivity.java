@@ -14,14 +14,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private StaffViewModel staffViewModel;
-    private ArrayAdapter<Staff> adapter;
-    private ListView lv;
+    private StaffAdapter adapter;
+    private RecyclerView recyclerView;
     private Button btn_add;
     private EditText edt_id,edt_name,edt_birthdate,edt_salary;
     private TextView result;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        lv = findViewById(R.id.lv);
+        recyclerView = findViewById(R.id.recyclerView);
         btn_add = findViewById(R.id.btn_add);
         edt_birthdate = findViewById(R.id.edt_birthdate);
         edt_id = findViewById(R.id.edt_id);
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         result = findViewById(R.id.result);
         staffViewModel = new StaffViewModel();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
-        lv.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         // Quan sát dữ liệu từ ViewModel
         staffViewModel.getStaffs().observe(this, new Observer<List<Staff>>() {
@@ -62,7 +63,17 @@ public class MainActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String id = edt_id.getText().toString().trim();
+                String name = edt_name.getText().toString().trim();
+                String birthdate = edt_birthdate.getText().toString().trim();
+                String salary = edt_salary.getText().toString().trim();
+                Staff staff = new Staff(id,name,birthdate,salary);
+                staffViewModel.addStaff(staff);
+                edt_id.setText("");
+                edt_name.setText("");
+                edt_birthdate.setText("");
+                edt_salary.setText("");
+                result.setVisibility(View.GONE);
             }
         });
     }

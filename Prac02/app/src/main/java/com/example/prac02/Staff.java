@@ -44,4 +44,9 @@ public class Staff {
     public void setSalary(String salary) {
         this.salary = salary;
     }
+
+    @Override
+    public String toString() {
+        return staffId+"-"+staffFullName+"-"+birthDate+"-"+salary;
+    }
 }
