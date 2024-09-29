@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -48,16 +49,15 @@ public class MainActivity extends AppCompatActivity {
         edt_salary = findViewById(R.id.edt_salary);
         result = findViewById(R.id.result);
         staffViewModel = new StaffViewModel();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        adapter = new StaffAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Quan sát dữ liệu từ ViewModel
         staffViewModel.getStaffs().observe(this, new Observer<List<Staff>>() {
             @Override
             public void onChanged(List<Staff> staffs) {
-                adapter.clear();
-                adapter.addAll(staffs);
-                adapter.notifyDataSetChanged();
+                adapter.setStaffList(staffs);
             }
         });
         btn_add.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 edt_name.setText("");
                 edt_birthdate.setText("");
                 edt_salary.setText("");
-                result.setVisibility(View.GONE);
+                if(result.getVisibility()!=View.GONE){
+                    result.setVisibility(View.GONE);
+                }
             }
         });
     }

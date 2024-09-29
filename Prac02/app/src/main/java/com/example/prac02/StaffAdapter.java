@@ -36,6 +36,11 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHod
         return staffList.size();
     }
 
+    public void setStaffList(List<Staff> staffList) {
+        this.staffList = staffList;
+        notifyDataSetChanged();
+    }
+
     public class StaffViewHoder extends RecyclerView.ViewHolder {
         private TextView tv;
         public StaffViewHoder(@NonNull View itemView) {
