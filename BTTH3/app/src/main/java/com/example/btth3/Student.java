@@ -1,6 +1,8 @@
 package com.example.btth3;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable {
     private String id,gender,birth_date,email,address,major;
     private float gpa;
     private int year;

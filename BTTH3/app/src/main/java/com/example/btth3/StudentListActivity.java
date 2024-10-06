@@ -34,7 +34,7 @@ public class StudentListActivity extends AppCompatActivity {
         rv = findViewById(R.id.rv);
         // set data for RecyclerView
         students = loadData();
-        studentAdapter adapter = new studentAdapter(students);
+        studentAdapter adapter = new studentAdapter(students,this);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 

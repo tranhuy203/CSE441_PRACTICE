@@ -41,7 +41,7 @@
         android:layout_toRightOf="@id/img"
         android:layout_below="@+id/tv_name"
         android:layout_marginTop="10dp"
-        android:textColor="#E01515"
+        android:textColor="#FB4235"
         />
     <View
         android:layout_width="330dp"
