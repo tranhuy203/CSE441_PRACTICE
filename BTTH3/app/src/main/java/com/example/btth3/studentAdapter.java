@@ -3,6 +3,7 @@ package com.example.btth3;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +20,8 @@ public class studentAdapter extends RecyclerView.Adapter<studentAdapter.studentV
     private List<Student> students;
     private OnItemClickListener onClickItem;
     public interface OnItemClickListener{
+        boolean onCreateOptionsMenu(Menu menu);
+
         void OnItemClicked(int position);
     }
 
@@ -26,7 +29,10 @@ public class studentAdapter extends RecyclerView.Adapter<studentAdapter.studentV
         this.students = students;
         this.onClickItem = onClickItem;
     }
-
+    public void updateData(List<Student> l){
+        this.students=l;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public studentViewHoder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
