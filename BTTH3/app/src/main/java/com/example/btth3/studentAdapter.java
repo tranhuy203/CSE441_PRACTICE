@@ -17,12 +17,14 @@ import java.util.zip.Inflater;
 
 public class studentAdapter extends RecyclerView.Adapter<studentAdapter.studentViewHoder>{
     private List<Student> students;
-    private Context context;
+    private OnItemClickListener onClickItem;
+    public interface OnItemClickListener{
+        void OnItemClicked(int position);
+    }
 
-
-    public studentAdapter(List<Student> students, Context context) {
+    public studentAdapter(List<Student> students, OnItemClickListener onClickItem) {
         this.students = students;
-        this.context = context;
+        this.onClickItem = onClickItem;
     }
 
     @NonNull
@@ -43,12 +45,10 @@ public class studentAdapter extends RecyclerView.Adapter<studentAdapter.studentV
         holder.tv_id.setText(student.getId());
         holder.tv_name.setText(student.getFull_name().toString());
         holder.tv_gpa.setText(student.getGpa()+"");
-        holder.student.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context,StudentInfoActivity.class);
-                i.putExtra("student_data", student);
-                context.startActivity(i);
+                onClickItem.OnItemClicked(holder.getAdapterPosition());
             }
         });
     }
@@ -61,14 +61,12 @@ public class studentAdapter extends RecyclerView.Adapter<studentAdapter.studentV
     public class studentViewHoder extends RecyclerView.ViewHolder{
         private ImageView img;
         private TextView tv_id,tv_name,tv_gpa;
-        private RelativeLayout student;
         public studentViewHoder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.img);
             tv_id = itemView.findViewById(R.id.tv_id);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_gpa = itemView.findViewById(R.id.tv_gpa);
-            student = itemView.findViewById(R.id.student);
         }
     }
 }
