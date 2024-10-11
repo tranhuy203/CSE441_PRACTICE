@@ -15,9 +15,9 @@ public class Full_name implements Serializable {
         String[] array = name.split(" ");
         this.first = array[array.length-1];
         this.last = array[0];
-        String midd = "";
-        for (int i = 1; i < array.length-1; i++) {
-            midd+=array[i];
+        String midd = array[1];
+        for (int i = 2; i < array.length-1; i++) {
+          midd+=" "+array[i];
         }
         this.midd = midd;
     }

@@ -57,8 +57,8 @@
             android:id="@+id/txtSV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="Danh sách sinh viên"
+            android:layout_marginLeft="20dp"
+            android:text="Danh sách SV"
             android:textColor="#fff"
             android:textSize="20dp" />
         <ImageView
@@ -69,14 +69,17 @@
             android:layout_marginEnd="30dp"
             android:src="@drawable/search" />
 
-
-        <TextView
+        <Button
+            android:background="@drawable/sort"
             android:layout_width="30dp"
             android:layout_height="25dp"
-            android:text="AZ"
-            android:textColor="#fff"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:id="@+id/sort"/>
+        <Button
+            android:layout_marginLeft="25dp"
+            android:background="@drawable/more"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:id="@+id/more"/>
     </androidx.appcompat.widget.Toolbar>
 
 </RelativeLayout>

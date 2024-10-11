@@ -2,6 +2,7 @@ package com.example.btth3;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -10,6 +11,7 @@ import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,6 +36,13 @@ public class EditStudentActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
+
+        // Bật nút quay lại
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         ipl_id = findViewById(R.id.ipl_id);
         ipl_name = findViewById(R.id.ipl_name);
         ipl_birthdate = findViewById(R.id.ipl_birthdate);
@@ -57,6 +66,14 @@ public class EditStudentActivity extends AppCompatActivity {
                 updateStudent();
             }
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            onBackPressed(); // Xử lý nút trở lại
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     public void updateStudent(){
         student = getUpdateStudent();

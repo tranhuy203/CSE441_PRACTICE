@@ -2,13 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
-        android:title="Settings"
-        android:icon="@android:drawable/ic_menu_preferences"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/sort_by_id"
+        android:title="Sắp xếp theo mã sinh viên" />
     <item
-        android:id="@+id/action_about"
-        android:title="About"
-        android:icon="@android:drawable/ic_menu_info_details"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/sort_by_gpa"
+        android:title="Sắp xếp theo điểm" />
+    <item
+        android:id="@+id/sort_by_name"
+        android:title="Sắp xếp theo họ và tên" />
 </menu>

@@ -1,12 +1,18 @@
 package com.example.btth3;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -26,7 +32,6 @@ import java.io.InputStream;
 public class StudentInfoActivity extends AppCompatActivity {
     private ImageView img;
     private TextView tv_id,tv_name,tv_birth_date,tv_address,tv_gender,tv_email,tv_major,tv_gpa,tv_year;
-    private Button btn; // test delete
     private Student student;
     private int position;
     private final int GO_TO_EDIT = 9;
@@ -51,21 +56,25 @@ public class StudentInfoActivity extends AppCompatActivity {
         tv_major = findViewById(R.id.tv_major);
         tv_gpa = findViewById(R.id.tv_gpa);
         tv_year = findViewById(R.id.tv_year);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         // logic processing
         // img gender
          student = (Student) getIntent().getSerializableExtra("student_data");
          position = getIntent().getIntExtra("position",0);
+         toolbar.setTitle(student.getId());
         loadData();
-        // test btn delete
-        btn = findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editStudent();
-            }
-        });
+
     }
-    private void deleteStudent(int position){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_student_ifo, menu); // Inflate menu
+        return true;
+    }
+    private void deleteStudent(){
         Intent i = new Intent(StudentInfoActivity.this,StudentListActivity.class);
         i.putExtra("position",position);
         setResult(2,i);
@@ -96,6 +105,20 @@ public class StudentInfoActivity extends AppCompatActivity {
         tv_year.setText("Sinh viên năm thứ: "+student.getYear());
     }
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id==android.R.id.home){
+            onBackPressed(); // Xử lý nút trở lại
+            return true;
+        } if(id==R.id.edit){
+            editStudent();
+            return true;
+        }if(id==R.id.delete){
+            showDeleteDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
@@ -106,5 +129,26 @@ public class StudentInfoActivity extends AppCompatActivity {
             i.putExtra("position",position);
             setResult(3,i);
         }
+    }
+    public void showDeleteDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Xác nhận xóa");
+        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteStudent();
+            }
+        });
+
+        builder.setNegativeButton(" CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); // Đóng hộp thoại
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

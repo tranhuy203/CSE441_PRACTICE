@@ -1,6 +1,7 @@
 package com.example.btth3;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Student implements Serializable {
     private String id,gender,birth_date,email,address,major;
@@ -87,9 +88,27 @@ public class Student implements Serializable {
     public Full_name getFull_name() {
         return full_name;
     }
-
+    public String getFistName(){
+        return this.getFull_name().getFirst();
+    }
+    public String getLastName(){
+        return this.getFull_name().getLast();
+    }
     public void setFull_name(Full_name full_name) {
         this.full_name = full_name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Float.compare(gpa, student.gpa) == 0 && year == student.year && Objects.equals(id, student.id) && Objects.equals(gender, student.gender) && Objects.equals(birth_date, student.birth_date) && Objects.equals(email, student.email) && Objects.equals(address, student.address) && Objects.equals(major, student.major) && Objects.equals(full_name, student.full_name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, gender, birth_date, email, address, major, gpa, year, full_name);
     }
 
     @Override

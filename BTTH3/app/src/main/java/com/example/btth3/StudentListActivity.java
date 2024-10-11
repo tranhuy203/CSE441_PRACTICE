@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -26,6 +30,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class StudentListActivity extends AppCompatActivity implements studentAdapter.OnItemClickListener {
@@ -34,15 +40,12 @@ public class StudentListActivity extends AppCompatActivity implements studentAda
     private studentAdapter adapter;
     private FloatingActionButton btn_add;
     private final int ADD = 1, DELETE = 2, GO_TO_DETAIL = 0, UPDATE = 3;
-    TextView txtSV;
-    ImageView cancel_search,imgSearch;
-    EditText edt_search;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu); // Nạp menu
-        return true;
-    }
+    private TextView txtSV;
+    private ImageView cancel_search,imgSearch;
+    private EditText edt_search;
+    private Button sort,more;
+    private String sortBy ;
+    private boolean isDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +57,8 @@ public class StudentListActivity extends AppCompatActivity implements studentAda
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         rv = findViewById(R.id.rv);
         // set data for RecyclerView
@@ -81,6 +84,77 @@ public class StudentListActivity extends AppCompatActivity implements studentAda
                 imgSearch.setVisibility(View.GONE);
                 edt_search.setVisibility(View.VISIBLE);
                 cancel_search.setVisibility(View.VISIBLE);
+            }
+        });
+        sort = findViewById(R.id.sort);
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(sortBy != null){
+                    if(isDesc){
+                        switch (sortBy){
+                            case "name":
+                                sortByName();
+                                isDesc = false;
+                                break;
+                            case "id":
+                                sortById();
+                                isDesc = false;
+                                break;
+                            default:
+                                sortByGpa();
+                                isDesc = false;
+                        }
+                    }else {
+                        switch (sortBy){
+                            case "name":
+                                sortByNameDesc();
+                                isDesc = true;
+                                break;
+                            case "id":
+                                sortByIdDesc();
+                                isDesc = true;
+                                break;
+                            default:
+                                sortByGpaDesc();
+                                isDesc = true;
+                        }
+                    }
+                }
+            }
+        });
+        more = findViewById(R.id.more);
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(StudentListActivity.this, more);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        int item_id = menuItem.getItemId();
+                        if(item_id==R.id.sort_by_id){
+                            sortById();
+                            sortBy = "id";
+                            isDesc = false;
+                            return true;
+                        }
+                        if (item_id==R.id.sort_by_gpa){
+                            sortByGpa();
+                            sortBy = "gpa";
+                            isDesc = false;
+                            return true;
+                        }
+                        if(item_id==R.id.sort_by_name){
+                            sortByName();
+                            sortBy = "name";
+                            isDesc = false;
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
             }
         });
         edt_search = findViewById(R.id.edt_search);
@@ -198,5 +272,73 @@ public class StudentListActivity extends AppCompatActivity implements studentAda
 
         // Trả về chuỗi đã được viết hoa, loại bỏ khoảng trắng thừa ở cuối
         return capitalizedWords.toString().trim();
+    }
+    public void sortByName(){
+        Collections.sort(students, new Comparator<Student>() {
+            @Override
+            public int compare(Student student, Student t1) {
+                int compare = student.getFistName().compareTo(t1.getFistName());
+                if(compare==0){
+                    compare = student.getLastName().compareTo(t1.getLastName());
+                }
+                adapter.updateData(students);
+                adapter.notifyDataSetChanged();
+                return compare;
+            }
+        });
+    }
+    public void sortByNameDesc(){
+        Collections.sort(students, new Comparator<Student>() {
+            @Override
+            public int compare(Student student, Student t1) {
+                int compare = t1.getFistName().compareTo(student.getFistName());
+                if(compare==0){
+                    compare = t1.getLastName().compareTo(student.getLastName());
+                }
+                adapter.updateData(students);
+                adapter.notifyDataSetChanged();
+                return compare;
+            }
+        });
+    }
+    public void sortById(){
+        Collections.sort(students, new Comparator<Student>() {
+            @Override
+            public int compare(Student student, Student t1) {
+                adapter.updateData(students);
+                adapter.notifyDataSetChanged();
+                return student.getId().compareTo(t1.getId());
+            }
+        });
+    }
+    public void sortByIdDesc(){
+        Collections.sort(students, new Comparator<Student>() {
+            @Override
+            public int compare(Student student, Student t1) {
+                adapter.updateData(students);
+                adapter.notifyDataSetChanged();
+                return t1.getId().compareTo(student.getId());
+            }
+        });
+    }
+    public void sortByGpa(){
+        Collections.sort(students, new Comparator<Student>() {
+            @Override
+            public int compare(Student student, Student t1) {
+                adapter.updateData(students);
+                adapter.notifyDataSetChanged();
+                return Float.compare(student.getGpa(),t1.getGpa());
+            }
+        });
+    }
+    public void sortByGpaDesc(){
+        Collections.sort(students, new Comparator<Student>() {
+            @Override
+            public int compare(Student student, Student t1) {
+                adapter.updateData(students);
+                adapter.notifyDataSetChanged();
+                return Float.compare(t1.getGpa(),student.getGpa());
+            }
+        });
     }
 }
